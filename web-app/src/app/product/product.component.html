@@ -1,0 +1,10 @@
+<div class="row ">
+    <div class="col-md-12" >
+
+    @if (products.length > 0) {
+        @for (product of products; track $index) {
+            <app-card-product [product]="product"></app-card-product>
+        }
+    }
+    </div>
+</div>

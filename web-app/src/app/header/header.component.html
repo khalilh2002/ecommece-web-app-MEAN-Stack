@@ -1,0 +1,40 @@
+<nav class="navbar navbar-expand-lg bg-secondary">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#">
+            <img src="image.png" alt="Logo" class="image" width="30" />
+        </a>
+        <button
+            class="navbar-toggler"
+            type="button"
+            data-toggle="collapse"
+            data-target="#navbarNav"
+            aria-controls="navbarNav"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+        >
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse  d-flex  justify-content-around" id="navbarNav">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link" routerLink="/home">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" routerLink="/product" >Product</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" routerLink="/about" >About</a>
+                </li>
+            </ul>
+            <app-search-bar class="form-inline my-2 my-lg-0"></app-search-bar>
+            <ul class="navbar-nav ml-auto gap-2">
+                <li class="nav-item">
+                    <a class="btn btn-primary" routerLink="/login" >Login</a>
+                </li>
+                <li class="nav-item">
+                    <a class="btn btn-success" href="#">Register</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>

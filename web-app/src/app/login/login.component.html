@@ -1,0 +1,19 @@
+<div class="d-flex justify-content-center algin-items-center my-3 p-3">
+    <div class="card">
+        <div class="card-header bg-primary ">login form</div>
+        <div class="card-body">
+            <form [formGroup]="loginForm" (ngSubmit)="applyLoginForm()">
+                <label for="email" class="form-label">Email</label>
+                <input type="text" class="form-control" name="email" formControlName="email">
+        
+                <label for="password" class="form-label">Password</label>
+                <input type="password" class="form-control" name="password" formControlName="password">
+    
+                <button type="submit" class="btn btn-primary" [disabled]="!loginForm.valid">Submit</button>
+            </form>
+           
+        </div>
+
+    </div>
+
+</div>

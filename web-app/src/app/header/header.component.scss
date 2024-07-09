@@ -1,0 +1,43 @@
+@import "../Styles/colors.scss";
+
+
+
+.bg-secondary {
+  background: $user-primary !important; // Use !important to override Bootstrap
+}
+// .navbar {
+//   display: flex;
+//   align-items: center;
+//   justify-content: space-between;
+//   background: $primary;
+//   padding: 10px 20px; // Add padding to give some space inside the navbar
+
+//   .logo {
+//     width: 30px;
+
+//     img {
+//       width: 100%; // Ensure the logo image fits within the container
+//     }
+//   }
+
+//   .navbar-items {
+//     ul {
+//       display: flex;
+//       justify-content: space-between;
+//       align-items: center;
+//       list-style: none;
+//       padding: 0;
+//       margin: 0;
+
+//       li {
+//         margin: 0 20px;
+
+//         a {
+//           text-decoration: none;
+//           color: $secondary; // Ensure links are visible
+//           font-size: 16px; // Adjust font size as needed
+//         }
+//       }
+//     }
+//   }
+// }
