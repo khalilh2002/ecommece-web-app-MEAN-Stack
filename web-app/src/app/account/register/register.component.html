@@ -1,1 +1,28 @@
-<p>register works!</p>
+<div class="d-flex justify-content-center algin-items-center my-3 p-3">
+    <div class="card">
+        <div class="card-header bg-primary ">create account</div>
+        <div class="card-body" style="width: 650px;">
+            <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+                <label for="name" class="form-label">Name</label>
+                <input type="text" class="form-control" name="name" formControlName="name">
+
+                <label for="age" class="form-label">Age</label>
+                <input type="number" class="form-control" name="age" formControlName="age">
+
+                <label for="email" class="form-label">Email</label>
+                <input type="email" class="form-control" name="email" formControlName="email">
+        
+                <label for="password" class="form-label">Password</label>
+                <input type="password" class="form-control" name="password" formControlName="password">
+
+                <label for="password" class="form-label">Confirm Password</label>
+                <input type="password" class="form-control" name="password" formControlName="passwordConfirm">
+    
+                <button type="submit" class="btn btn-primary m-3" [disabled]="!registerForm.valid">Submit</button>
+            </form>
+           
+        </div>
+
+    </div>
+
+</div>

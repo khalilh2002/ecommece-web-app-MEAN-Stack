@@ -22,7 +22,7 @@ export class RegisterService {
   }
 
   verifyEmail(id:string , token : string):Observable<any>{
-    return this.http.post(this.baseUrl+'/'+id+'/'+token,null)
+    return this.http.post(this.baseUrl+'/verify'+'/'+id+'/'+token,null)
   }
 
 

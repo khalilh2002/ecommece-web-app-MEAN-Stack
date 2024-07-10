@@ -1,3 +1,6 @@
+/**
+ * TODO : ADD RESET PASSWORD AND RESEND EMAIL
+ */
 const express = require("express");
 const User = require("../models/User");
 const jwt = require("jsonwebtoken");
@@ -44,10 +47,12 @@ router.post("/login", async (req, res) => {
 });
 
 router.post("/register", async (req, res) => {
+    
     const { name, email, age, password } = req.body;
 
-    if (isEmailExist(email)) {
-        return res.status(400).json({ message: "Email is already exists" });
+    const emailExists = await isEmailExist(email);
+    if (emailExists) {
+        return res.status(400).json({ message: "Email already exists" });
     }
 
     //hash password to store it in database
@@ -82,8 +87,10 @@ router.post("/register", async (req, res) => {
 
     //style and email info
 
+
+
     const object = "Verify Email";
-    const verifyLink = `${req.protocol}://${req.get('host')}/verify?token=${token}&userId=${user.id}`;
+    const verifyLink = `${process.env.FRONT_END_URL}/verify?token=${token}&userId=${user.id}`;
     const message = `
       
         Hi ${user.name},
@@ -134,7 +141,7 @@ router.post("/verify/:id/:token", async (req, res) => {
         user.verificationTokenExpireDate = null;
         await user.save();
 
-        return res.status(200).json({ message: "User verified successfully" , user:user});
+        return res.status(200).json({ message: "User verified successfully" , user:user , ok:true});
     } catch (error) {
         return res.status(500).json({ message: "Error verifying user", error });
     }
@@ -142,12 +149,11 @@ router.post("/verify/:id/:token", async (req, res) => {
 
 async function isEmailExist(email) {
     try {
-        // Check if the email already exists
-        const tmpUser = await User.findOne({ email });
-        if (tmpUser) {
-            return true;
-        }
-        return false;
+        // Find a user with the provided email
+        const existingUser = await User.findOne({ email: email });
+        
+        // Return true if a user is found, false otherwise
+        return existingUser ? true : false;
     } catch (error) {
         console.error("Error checking email existence:", error);
         throw error; // Re-throw the error for appropriate handling
