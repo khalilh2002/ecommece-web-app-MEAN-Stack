@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { RegisterService } from '../../service/register.service';
+import { SecurityService } from '../../service/security.service';
 @Component({
   selector: 'app-register',
   standalone: true,
@@ -10,7 +10,7 @@ import { RegisterService } from '../../service/register.service';
 })
 export class RegisterComponent {
 
-  constructor(private registerService : RegisterService) {}
+  constructor(private securityService : SecurityService) {}
 
   registerForm = new FormGroup({
     name : new FormControl(''),
@@ -36,7 +36,7 @@ export class RegisterComponent {
       return;
     }
     
-    this.registerService.registerApi(name, age, email, password).subscribe({
+    this.securityService.registerApi(name, age, email, password).subscribe({
       next: (response) => {
         alert('check your email for verification')
         console.log('User registered successfully', response);

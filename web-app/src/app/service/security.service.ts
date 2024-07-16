@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
-export class RegisterService {
+export class SecurityService {
 
   private readonly baseUrl = `${environment.apiUrl}/auth`
 
@@ -22,8 +22,22 @@ export class RegisterService {
   }
 
   verifyEmail(id:string , token : string):Observable<any>{
+    
     return this.http.post(this.baseUrl+'/verify'+'/'+id+'/'+token,null)
   }
 
+  checkLogin(email : string , password:string  ) :  Observable<any> {
+    return this.http.post(this.baseUrl+'/login',{
+      "email" : email,
+      "password":password
+    },{ 
+      withCredentials: true 
+    })
+  }
 
+  checkUser():Observable<any> {
+    return this.http.get(this.baseUrl+'/user',{ 
+      withCredentials: true 
+    })
+  }
 }

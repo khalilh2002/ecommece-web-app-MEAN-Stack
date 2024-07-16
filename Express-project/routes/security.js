@@ -5,20 +5,45 @@ const express = require("express");
 const User = require("../models/User");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
-
 const hashPassword = require("../service/hashPassword");
-const cookieParser = require("cookie-parser");
 const sendEmail = require("../service/sendEmail");
-
 const { default: mongoose } = require("mongoose");
 const router = express.Router();
 
 require("dotenv").config();
 
-router.use(cookieParser());
+const secretKey = process.env.JWT_SECRET;
+
+router.get('/user', async (req , res)=>{
+    try{
+        const cookie = req.cookies['authToken']
+        if(!cookie){
+            return res.status(500).json({
+                message : 'no cookie'
+            })
+        }
+        const claims = jwt.decode(cookie , secretKey )
+        if(!claims){
+            return res.status(401).json({
+                message : 'user not authorized'
+            })
+        }
+        const user = await User.findById(claims.id)
+        res.send(user)
+
+    }catch(e){
+        return res.status(401).json({
+            message:"unauthenticated"
+            
+        })
+    }
+})
+
+router.get('')
+
 
 router.post("/login", async (req, res) => {
-    const { email, password } = req.body;
+    let { email, password } = req.body;
     const user = await User.findOne({ email: email });
     if (!user) {
         return res.status(400).json({ message: "Email or password is wrong" });
@@ -31,14 +56,17 @@ router.post("/login", async (req, res) => {
 
     const token = jwt.sign(
         { id: user.id, email: user.email },
-        process.env.JWT_SECRET,
+        secretKey,
         { expiresIn: process.env.JWT_EXPIRE_IN }
     );
-    res.cookie("token", token, {
+
+    res.cookie("authToken", token, {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
-        sameSite: "strict",
+        //sameSite: "strict",
+        maxAge : 1000 * 60 * 60 * 24 * 15 //15 days
     });
+
 
     return res.status(200).json({
         message: "the user is successfully in ",
@@ -70,7 +98,7 @@ router.post("/register", async (req, res) => {
     //token to verify the email before send in it
     const token = jwt.sign(
         { id: user.id, email: user.email },
-        process.env.JWT_SECRET,
+        secretKey,
         { expiresIn: parseInt(process.env.JWT_VERIFY_EMAIL_EXPIRE_AFTER),}
     );
 
@@ -86,7 +114,7 @@ router.post("/register", async (req, res) => {
     user.verificationTokenExpireDate = Date.now() + expireDate * 1000;
 
     //style and email info
-
+ 
 
 
     const object = "Verify Email";
@@ -124,7 +152,7 @@ router.post("/verify/:id/:token", async (req, res) => {
         }
 
         try {
-            const decoded = jwt.verify(token, process.env.JWT_SECRET);
+            const decoded = jwt.verify(token, secretKey);
             if (decoded.id !== user._id.toString() || decoded.email !== user.email) {
                 return res.status(400).json({ message: "Invalid verification link" });
             }
@@ -141,11 +169,30 @@ router.post("/verify/:id/:token", async (req, res) => {
         user.verificationTokenExpireDate = null;
         await user.save();
 
+
+        const token = jwt.sign(
+            { id: user.id, email: user.email },
+            secretKey,
+            { expiresIn: process.env.JWT_EXPIRE_IN }
+        );
+        
+        res.cookie("authToken", token, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === "production",
+            //sameSite: "strict",
+            maxAge : 1000 * 60 * 60 * 24 * 15 //15 days
+        });
+
         return res.status(200).json({ message: "User verified successfully" , user:user , ok:true});
     } catch (error) {
         return res.status(500).json({ message: "Error verifying user", error });
     }
 });
+
+router.post('/logout',(res , req)=>{
+    res.cookie('authToken' , {maxAge:0})
+})
+
 
 async function isEmailExist(email) {
     try {

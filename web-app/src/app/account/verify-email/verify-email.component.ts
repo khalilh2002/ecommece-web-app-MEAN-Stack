@@ -1,7 +1,6 @@
 import { Component , OnInit} from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { RegisterService } from '../../service/register.service';
-
+import { SecurityService } from '../../service/security.service';
 @Component({
   selector: 'app-verify-email',
   standalone: true,
@@ -11,10 +10,10 @@ import { RegisterService } from '../../service/register.service';
 })
 export class VerifyEmailComponent implements OnInit{
   
-  constructor(private activatedRoute : ActivatedRoute , private registerService : RegisterService , private router : Router ){}
+  constructor(private activatedRoute : ActivatedRoute , private securityService : SecurityService , private router : Router ){}
 
   verifyLink(id:string , token:string):void{
-    this.registerService.verifyEmail(id,token).subscribe({
+    this.securityService.verifyEmail(id,token).subscribe({
       next:(res)=>{
         console.log(res);
         

@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import {FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
-import { LoginService } from '../../service/login.service';
 import { Router } from '@angular/router';
+import { SecurityService } from '../../service/security.service';
 
 @Component({
   selector: 'app-login',
@@ -12,7 +12,7 @@ import { Router } from '@angular/router';
 })
 export class LoginComponent {
 
-  constructor(private loginService : LoginService , private router : Router){}
+  constructor(private securityService : SecurityService , private router : Router){}
 
 
   loginForm = new FormGroup({
@@ -33,15 +33,21 @@ export class LoginComponent {
       alert('error fill all the inputs')
       return
     }
-    this.loginService.checkLogin(email,password).subscribe({
+    this.securityService.checkLogin(email,password).subscribe({
       next : (res)=>{
-        if (res?.user?.role=="admin") {
-          alert('admin')
-          this.router.navigate(['/admin'])
-        }else if(res?.user?.role=="user"){
-          alert('user')
-          this.router.navigate(['/home'])
+        if(res?.user?.verified===true){
+
+          if (res?.user?.role=="admin") {
+            alert('admin')
+            this.router.navigate(['/admin'])
+          }else if(res?.user?.role=="user"){
+            alert('user')
+            this.router.navigate(['/home'])
+          }
+        }else{
+          alert('check email for verification')
         }
+       
       },
       error: (err)=>{
         alert(err?.error?.message)
