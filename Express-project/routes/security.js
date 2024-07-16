@@ -29,7 +29,9 @@ router.get('/user', async (req , res)=>{
             })
         }
         const user = await User.findById(claims.id)
-        res.send(user)
+        const { password: userPassword,verificationToken ,verificationTokenExpireDate, ...data } = user.toObject();
+
+        res.json({ user: data });
 
     }catch(e){
         return res.status(401).json({
@@ -39,7 +41,7 @@ router.get('/user', async (req , res)=>{
     }
 })
 
-router.get('')
+
 
 
 router.post("/login", async (req, res) => {
@@ -67,10 +69,12 @@ router.post("/login", async (req, res) => {
         maxAge : 1000 * 60 * 60 * 24 * 15 //15 days
     });
 
+    const { password: userPassword,verificationToken ,verificationTokenExpireDate, ...data } = user.toObject();
 
     return res.status(200).json({
         message: "the user is successfully in ",
-        user: user,
+        ok: true,
+        user: data,
     });
 });
 

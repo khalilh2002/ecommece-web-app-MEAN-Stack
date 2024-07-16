@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import {FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import { Router } from '@angular/router';
 import { SecurityService } from '../../service/security.service';
+import {CookieService} from 'ngx-cookie-service';
+
 
 @Component({
   selector: 'app-login',
@@ -12,7 +14,7 @@ import { SecurityService } from '../../service/security.service';
 })
 export class LoginComponent {
 
-  constructor(private securityService : SecurityService , private router : Router){}
+  constructor(private securityService : SecurityService , private router : Router , private cookieService : CookieService){}
 
 
   loginForm = new FormGroup({
@@ -35,14 +37,22 @@ export class LoginComponent {
     }
     this.securityService.checkLogin(email,password).subscribe({
       next : (res)=>{
+        console.log(res);
+        
         if(res?.user?.verified===true){
+          
+          this.cookieService.set('user-info',JSON.stringify(res.user))
 
           if (res?.user?.role=="admin") {
+          
             alert('admin')
             this.router.navigate(['/admin'])
+          
           }else if(res?.user?.role=="user"){
+          
             alert('user')
             this.router.navigate(['/home'])
+          
           }
         }else{
           alert('check email for verification')

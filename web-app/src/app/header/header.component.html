@@ -26,15 +26,26 @@
                     <a class="nav-link" routerLink="/about" >About</a>
                 </li>
             </ul>
-            <app-search-bar class="form-inline my-2 my-lg-0"></app-search-bar>
-            <ul class="navbar-nav ml-auto gap-2">
-                <li class="nav-item">
-                    <a class="btn btn-primary" routerLink="/login" >Login</a>
-                </li>
-                <li class="nav-item">
-                    <a class="btn btn-success"routerLink="/register">Register</a>
-                </li>
-            </ul>
+            @if (authenticated) {
+                <app-search-bar class="form-inline my-2 my-lg-0"></app-search-bar>
+                <ul class="navbar-nav ml-auto gap-2">
+                    <li class="nav-item">
+                        <a class="btn btn-primary" routerLink="/login" >you welcome {{user?.name}}</a>
+                    </li>
+                    
+                </ul>
+            }@else {
+                <app-search-bar class="form-inline my-2 my-lg-0"></app-search-bar>
+                <ul class="navbar-nav ml-auto gap-2">
+                    <li class="nav-item">
+                        <a class="btn btn-primary" routerLink="/login" >Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="btn btn-success"routerLink="/register">Register</a>
+                    </li>
+                </ul>
+            }
+           
         </div>
     </div>
 </nav>
