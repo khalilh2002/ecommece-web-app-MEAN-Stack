@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { SecurityService } from '../service/security.service';
 import { CookieService } from 'ngx-cookie-service';
-import { Emitters } from '../emitters/emitters';
 
 
 @Component({
@@ -16,11 +15,14 @@ export class HomeComponent implements OnInit{
   ngOnInit(): void {
     this.securityService.checkUser().subscribe({
       next :(res )=>{
-        this.cookieService.set('user-info', JSON.stringify(res.user))
-        Emitters.authEmitter.emit(true);
+        
+        localStorage.setItem('user-info', JSON.stringify(res.user))
+        this.cookieService.set('is-login', 'true')
+
       },
       error:(err)=>{
-        console.warn(err);
+        this.cookieService.set('is-login', 'false')
+
       }
     })
   }
