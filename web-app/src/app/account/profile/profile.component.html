@@ -1,0 +1,20 @@
+<div class="d-flex justify-content-center m-3 profile-card">
+    <div class="card">
+        <div class="card-header bg-primary text-white">Profile {{user?.name}}</div>
+        <div class="card-body">
+            <div class="d-flex justify-content-center mb-3">
+                <img [src]="baseUrl+'/'+user?.image" alt="Profile Picture" class="rounded-circle profile-img">
+            </div>
+            <div class="profile-details">
+                <div class="mb-3">
+                    <label class="form-label">Name</label>
+                    <p class="form-control-plaintext">{{user.name}}</p>
+                </div>
+                <div>
+                    <label class="form-label">Email</label>
+                    <p class="form-control-plaintext">{{user.email}}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
