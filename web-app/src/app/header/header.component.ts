@@ -3,6 +3,7 @@ import { RouterLink } from '@angular/router';
 import { SecurityService } from '../service/security.service';
 import { CookieService } from 'ngx-cookie-service';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { environment } from '../../environments/environment';
 
 @Component({
   selector: 'app-header',
@@ -14,8 +15,10 @@ import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 export class HeaderComponent implements OnInit{
   authenticated  = false;
   user : any;
+  baseUrl = environment.baseUrl
   
   constructor(private securityService : SecurityService , private cookieService:CookieService ){}
+
   ngOnInit(): void {
     let isLogin = this.cookieService.get('is-login') === 'true'; // Strict comparison
 
@@ -65,4 +68,23 @@ export class HeaderComponent implements OnInit{
     
   }
 
+  logout(){
+      this.securityService.logout().subscribe({
+        next: () => {
+          console.log('Logout successful');
+          this.cookieService.deleteAll();
+          console.log('Cookies after deletion:', this.cookieService.getAll());
+          localStorage.clear();
+          console.log('LocalStorage after clearing:', localStorage);
+          this.authenticated = false;
+        },
+        error: (err) => {
+          console.error('Logout failed', err);
+        }
+      });
+    }
+    
+  
+
 }
+ 

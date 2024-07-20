@@ -36,10 +36,12 @@ app.get('/', (req, res) => {
 const usersRouter = require('./routes/users') ;
 const productsRouter = require('./routes/Products') ;
 const securityRouter = require('./routes/security');
+const statics = require('./routes/statics');
 
 app.use('/users',usersRouter);
 app.use('/products',productsRouter);
 app.use('/auth',securityRouter);
+app.use('/statics',statics);
 
 
 

@@ -41,7 +41,7 @@ export class LoginComponent {
         
         if(res?.user?.verified===true){
           
-          this.cookieService.set('user-info',JSON.stringify(res.user))
+          localStorage.setItem('user-info',JSON.stringify(res.user))
           this.cookieService.set('is-login','true')
 
           if (res?.user?.role=="admin") {
@@ -55,6 +55,7 @@ export class LoginComponent {
             this.router.navigate(['/home'])
           
           }
+          window.location.reload()
         }else{
           alert('check email for verification')
         }

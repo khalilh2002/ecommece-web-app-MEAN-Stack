@@ -4,12 +4,13 @@ import { ProductComponent } from './product/product.component';
 import { RegisterComponent } from './account/register/register.component';
 import { LoginComponent } from './account/login/login.component';
 import { VerifyEmailComponent } from './account/verify-email/verify-email.component';
+import { DashboardComponent } from './admin/dashboard/dashboard.component';
+import { ProfileComponent } from './account/profile/profile.component';
 
 export const routes: Routes = [
     {
         path:"home",
-        component: HomeComponent,
-        title:"home"
+        redirectTo: "",
         
     },
     {
@@ -41,6 +42,18 @@ export const routes: Routes = [
         component: VerifyEmailComponent,
         title:"verify"
         
-    }
+    },
+    {
+        path:"profile",
+        component: ProfileComponent,
+        
+        
+    },
+    {
+        path:"admin",
+        component: DashboardComponent,
+        title:"admin"
+        
+    },
 
 ];

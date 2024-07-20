@@ -5,6 +5,10 @@ const userSchema = new mongoose.Schema({
         type:String,
         required:true
     },
+    sex:{
+        type:String,
+        required:true
+    },
     email:{
         type: String,
         unique: true,
@@ -37,7 +41,7 @@ const userSchema = new mongoose.Schema({
     },
     image:{
         type : String,
-        required : false
+        default : 'image/default/profile.png'
     },
     createdAt:{
         type: Date,

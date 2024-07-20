@@ -12,12 +12,13 @@ export class SecurityService {
 
   constructor(private http : HttpClient) { }
 
-  registerApi(name:string , age :number ,email:string , password:string ):Observable<any>{
+  registerApi(name:string , age :number ,email:string , password:string , sex:string):Observable<any>{
     return this.http.post(this.baseUrl+'/register',{
       name : name,
       age : age ,
       email : email ,
-      password : password
+      password : password ,
+      sex : sex
     })
   }
 
@@ -37,6 +38,11 @@ export class SecurityService {
 
   checkUser():Observable<any> {
     return this.http.get(this.baseUrl+'/user',{ 
+      withCredentials: true 
+    })
+  }
+  logout():Observable<any> {
+    return this.http.post(this.baseUrl+'/logout',{ 
       withCredentials: true 
     })
   }

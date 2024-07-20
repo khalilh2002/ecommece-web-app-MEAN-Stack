@@ -16,6 +16,7 @@ export class RegisterComponent {
     name : new FormControl(''),
     age : new FormControl(),
     email : new FormControl(''),
+    sex : new FormControl('M'),
     password : new FormControl(''),
     passwordConfirm : new FormControl(''),
   })
@@ -28,6 +29,7 @@ export class RegisterComponent {
     const name: string = this.registerForm.value.name || '';
     const age: number = this.registerForm.value.age || 0;
     const email: string = this.registerForm.value.email || '';
+    const sex : string = this.registerForm.value.sex || 'M'
     const password: string = this.registerForm.value.password || '';
     const passwordConfirm: string | undefined | null = this.registerForm.value.passwordConfirm ;
     
@@ -36,7 +38,7 @@ export class RegisterComponent {
       return;
     }
     
-    this.securityService.registerApi(name, age, email, password).subscribe({
+    this.securityService.registerApi(name, age, email, password , sex).subscribe({
       next: (response) => {
         alert('check your email for verification')
         console.log('User registered successfully', response);

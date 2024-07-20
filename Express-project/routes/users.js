@@ -11,10 +11,10 @@ router.get('/', async (req,res)=>{
 
 router.put('/add', async (req, res) => {
     try {
-        const { name, age, email } = req.body;
+        const { name, age, email ,sex} = req.body;
         // Validate input
-        if (!name || !age || !email) {
-            return res.status(400).json({ message: 'Name, age, and email are required' });
+        if (!name || !age || !email || !sex) {
+            return res.status(400).json({ message: 'Name, age, sex and email are required' });
         }
 
         // Respond with the received data
@@ -22,6 +22,7 @@ router.put('/add', async (req, res) => {
             name: name,
             age: age,
             email: email,
+            sex: sex,
             message: "Data has been received"
         })
         await user.save()

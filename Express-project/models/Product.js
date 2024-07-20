@@ -10,7 +10,8 @@ const productSchema = new mongoose.Schema({
         required: false
     },
     image: {
-        type: String
+        type: String,
+        default : 'image/default/image.png'
     },
     price: {
         type: Number,
@@ -19,6 +20,10 @@ const productSchema = new mongoose.Schema({
     quantity: {
         type: Number,
         required: true
+    },
+    rating:{
+        type:Number,
+        default:5
     },
     createdAt: {
         type: Date,

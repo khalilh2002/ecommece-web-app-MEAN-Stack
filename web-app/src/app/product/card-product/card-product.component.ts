@@ -18,14 +18,14 @@ export class CardProductComponent {
   }
   getImageUrl(): string {
     // Get base API URL from environment
-    const apiUrl = environment.apiUrl;
+    const baseUrl = environment.baseUrl;
 
     // Check if product.image exists, otherwise use default image path
-    const imagePath = this.product?.image ? this.product.image : 'default/image.png';
-    console.log(`${apiUrl}${imagePath}`);
+    const imagePath = this.product?.image ? this.product.image : 'product/default/image.png';
+    console.log(`${baseUrl}${imagePath}`);
     
 
     // Construct and return full image URL
-    return `${apiUrl}${imagePath}`;
+    return `${baseUrl}/${imagePath}`;
   }
 }

@@ -7,7 +7,8 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const hashPassword = require("../service/hashPassword");
 const sendEmail = require("../service/sendEmail");
-const { default: mongoose } = require("mongoose");
+//const { default: mongoose } = require("mongoose");
+const ms = require('ms');
 const router = express.Router();
 
 require("dotenv").config();
@@ -78,68 +79,136 @@ router.post("/login", async (req, res) => {
     });
 });
 
-router.post("/register", async (req, res) => {
+// router.post("/register", async (req, res) => {
     
-    const { name, email, age, password } = req.body;
+//     const { name, email, age, password , sex} = req.body;
 
-    const emailExists = await isEmailExist(email);
-    if (emailExists) {
-        return res.status(400).json({ message: "Email already exists" });
-    }
+//     const emailExists = await isEmailExist(email);
+//     if (emailExists) {
+//         return res.status(400).json({ message: "Email already exists" });
+//     }
 
-    //hash password to store it in database
-    const hashedPassword = await hashPassword(password);
+//     //hash password to store it in database
+//     const hashedPassword = await hashPassword(password);
 
-    //create user
-    let user = new User({
-        name: name,
-        email: email,
-        age: age,
-        password: hashedPassword,
-        role: "user",
-    });
+//     //create user
+//     let user = new User({
+//         name: name,
+//         email: email,
+//         age: age,
+//         sex : sex,
+//         password: hashedPassword,
+//         role: "user",
+//     });
 
-    //token to verify the email before send in it
-    const token = jwt.sign(
-        { id: user.id, email: user.email },
-        secretKey,
-        { expiresIn: parseInt(process.env.JWT_VERIFY_EMAIL_EXPIRE_AFTER),}
-    );
+//     //token to verify the email before send in it
+//     const token = jwt.sign(
+//         { id: user.id, email: user.email },
+//         secretKey,
+//         { expiresIn: parseInt(process.env.JWT_VERIFY_EMAIL_EXPIRE_AFTER),}
+//     );
 
-    const expireDate = parseInt(process.env.JWT_VERIFY_EMAIL_EXPIRE_AFTER);
+//     const expireDate = parseInt(process.env.JWT_VERIFY_EMAIL_EXPIRE_AFTER);
 
-    if (isNaN(expireDate)) {
-        return res
-            .status(415)
-            .json({ message: "type error in expire date from security token" });
-    }
+//     if (isNaN(expireDate)) {
+//         return res
+//             .status(415)
+//             .json({ message: "type error in expire date from security token" });
+//     }
 
-    user.verificationToken = token;
-    user.verificationTokenExpireDate = Date.now() + expireDate * 1000;
+//     user.verificationToken = token;
+//     user.verificationTokenExpireDate = Date.now() + expireDate * 1000;
 
-    //style and email info
+//     //style and email info
  
 
 
-    const object = "Verify Email";
-    const verifyLink = `${process.env.FRONT_END_URL}/verify?token=${token}&userId=${user.id}`;
-    const message = `
+//     const object = "Verify Email";
+//     const verifyLink = `${process.env.FRONT_END_URL}/verify?token=${token}&userId=${user.id}`;
+//     const message = `
       
-        Hi ${user.name},
+//         Hi ${user.name},
   
-        We just need to verify your email address before you can continue.
+//         We just need to verify your email address before you can continue.
   
-        Verify your email address <a href="${verifyLink}">Link</a>
+//         Verify your email address <a href="${verifyLink}">Link</a>
   
-        Thanks! The [company] team
+//         Thanks! The [company] team
       
-    `;
+//     `;
 
-    await sendEmail(email, object, message);
+//     await sendEmail(email, object, message);
 
-    await user.save();
+//     await user.save();
 
-    res.status(200).json({ message: "Verification email sent!" });
+//     res.status(200).json({ message: "Verification email sent!" });
+// });
+
+router.post("/register", async (req, res) => {
+    const { name, email, age, password, sex } = req.body;
+
+    // Input validation
+    if (!name || !email || !age || !password || !sex) {
+        return res.status(400).json({ message: "All fields are required" });
+    }
+
+    try {
+        const emailExists = await isEmailExist(email);
+        if (emailExists) {
+            return res.status(400).json({ message: "Email already exists" });
+        }
+
+        // Hash password
+        const hashedPassword = await hashPassword(password);
+
+        // Create user
+        let user = new User({
+            name,
+            email,
+            age,
+            sex,
+            password: hashedPassword,
+            role: "user",
+        });
+
+        // Generate token for email verification
+        const token = jwt.sign(
+            { id: user.id, email: user.email },
+            process.env.JWT_SECRET,
+            { expiresIn: process.env.JWT_VERIFY_EMAIL_EXPIRE_AFTER }
+        );
+
+        const expireDate = ms(process.env.JWT_VERIFY_EMAIL_EXPIRE_AFTER);
+
+        if (isNaN(expireDate)) {
+            return res.status(415).json({ message: "Invalid expire date for security token" });
+        }
+
+        user.verificationToken = token;
+        user.verificationTokenExpireDate = Date.now() + expireDate;
+
+        // Email details
+        const object = "Verify Email";
+        const verifyLink = `${process.env.FRONT_END_URL}/verify?token=${token}&userId=${user.id}`;
+        const message = `
+            Hi ${user.name},
+
+            We just need to verify your email address before you can continue.
+
+            Verify your email address <a href="${verifyLink}">Link</a>
+
+            Thanks! The [company] team
+        `;
+
+        await sendEmail(email, object, message);
+
+        await user.save();
+
+        res.status(200).json({ message: "Verification email sent!" });
+    } catch (error) {
+        console.error("Error during registration:", error);
+        res.status(500).json({ message: "Server error" });
+    }
 });
 
 router.post("/verify/:id/:token", async (req, res) => {
@@ -158,9 +227,11 @@ router.post("/verify/:id/:token", async (req, res) => {
         try {
             const decoded = jwt.verify(token, secretKey);
             if (decoded.id !== user._id.toString() || decoded.email !== user.email) {
+                console.log("Decoded token does not match user data:", decoded);
                 return res.status(400).json({ message: "Invalid verification link" });
             }
         } catch (error) {
+            console.log("Token verification error:", error);
             return res.status(400).json({ message: "Invalid or expired token" });
         }
 
@@ -173,30 +244,31 @@ router.post("/verify/:id/:token", async (req, res) => {
         user.verificationTokenExpireDate = null;
         await user.save();
 
-
-        const token = jwt.sign(
+        const newToken = jwt.sign(
             { id: user.id, email: user.email },
             secretKey,
             { expiresIn: process.env.JWT_EXPIRE_IN }
         );
         
-        res.cookie("authToken", token, {
+        res.cookie("authToken", newToken, {
             httpOnly: true,
             secure: process.env.NODE_ENV === "production",
             //sameSite: "strict",
-            maxAge : 1000 * 60 * 60 * 24 * 15 //15 days
+            maxAge: 1000 * 60 * 60 * 24 * 15 // 15 days
         });
 
-        return res.status(200).json({ message: "User verified successfully" , user:user , ok:true});
+        return res.status(200).json({ message: "User verified successfully", user: user, ok: true });
     } catch (error) {
+        console.log("Error during verification process:", error);
         return res.status(500).json({ message: "Error verifying user", error });
     }
 });
 
-router.post('/logout',(res , req)=>{
-    res.cookie('authToken' , {maxAge:0})
-})
-
+router.post('/logout', (req, res) => {
+    res.clearCookie('authToken');
+    res.status(200).send({ message: 'Logout successful' });
+  });
+  
 
 async function isEmailExist(email) {
     try {
