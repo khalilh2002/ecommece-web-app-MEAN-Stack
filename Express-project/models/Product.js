@@ -11,7 +11,7 @@ const productSchema = new mongoose.Schema({
     },
     image: {
         type: String,
-        default : 'image/default/image.png'
+        default: 'image/default/image.png'
     },
     price: {
         type: Number,
@@ -21,9 +21,13 @@ const productSchema = new mongoose.Schema({
         type: Number,
         required: true
     },
-    rating:{
-        type:Number,
-        default:5
+    rating: {
+        type: Number,
+        default: 5
+    },
+    category: {
+        type: mongoose.Types.ObjectId,
+        ref: 'Category'
     },
     createdAt: {
         type: Date,
@@ -31,6 +35,6 @@ const productSchema = new mongoose.Schema({
     }
 });
 
-const Product = mongoose.model('Product', productSchema); // Correct usage of mongoose.model
+const Product = mongoose.model('Product', productSchema);
 
 module.exports = Product;

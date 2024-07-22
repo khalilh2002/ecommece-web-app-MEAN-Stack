@@ -5,5 +5,7 @@ export interface ProductType {
     image?: string;
     price: number;
     quantity: number;
+    rating?:number;
+    category?:any;
     createdAt?: Date;
 }

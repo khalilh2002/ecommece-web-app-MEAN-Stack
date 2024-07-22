@@ -11,7 +11,7 @@ import { environment } from '../../../environments/environment';
   styleUrl: './card-product.component.scss'
 })
 export class CardProductComponent {
-  @Input() product : ProductType | null = null;
+  @Input() product : any | null = null;
 
   getApiUrl(){
     return environment.apiUrl;

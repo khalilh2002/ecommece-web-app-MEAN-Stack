@@ -10,67 +10,87 @@ import { StaticsService } from '../../service/statics.service';
   styleUrls: ['./dashboard.component.scss']
 })
 export class DashboardComponent implements OnInit {
-  data: any;
+  dataUserByFemaleAndMale: any;
+  dataCategoryByProductsCount: any;
+  totalUsers = 0;
+  totalCategories = 0;
+  colors = {
+    backgroundColor: [
+      '#FF5733', // red
+      '#33FF57', // green
+      '#3357FF', // blue
+      '#FF33A6', // pink
+      '#FFBD33', // yellow
+      '#33FFF6'  // cyan
+    ],
+    hoverBackgroundColor: [
+      '#E74C3C', // darker red
+      '#2ECC71', // darker green
+      '#3498DB', // darker blue
+      '#E84393', // darker pink
+      '#F1C40F', // darker yellow
+      '#1ABC9C'  // darker cyan
+    ]
+  };
 
-  totalUsers:number = 0 ;
-  totalFemale:number =0;
-  totalMale:number =0;
-
-  constructor(private staticsService :StaticsService){
-    
-   
-
-  }
+  constructor(private staticsService: StaticsService) {}
 
   ngOnInit() {
+    this.loadUserByFemaleAndMaleData();
+    this.loadCategoryByProductsCountData();
+  }
+
+  private loadUserByFemaleAndMaleData() {
     this.staticsService.userByFemaleAndMale().subscribe({
-      next:(res)=>{
-        this.totalFemale = res.totalFemale ;
-        this.totalMale = res.totalMale ;
-        this.totalUsers = res.totalUsers;
+      next: (res) => {
+        this.totalUsers = res.totalUser;
+        const totalFemale = res.totalFemale;
+        const totalMale = res.totalMale;
+        const totalUsers = res.totalUsers;
         
-        this.data = [
-          { label: 'Females', total: this.totalFemale },
-          { label: 'Males', total: this.totalMale },
-          { label: 'Others/Undefined', total: this.totalUsers - (this.totalFemale + this.totalMale) }
+        this.dataUserByFemaleAndMale = [
+          { label: 'Females', total: totalFemale },
+          { label: 'Males', total: totalMale },
+          { label: 'Others/Undefined', total: totalUsers - (totalFemale + totalMale) }
         ];
         
-        const labels = this.data.map((item: { label: string; }) => item.label);
-        const totals = this.data.map((item: { total: number; }) => item.total);
-    
-        console.log(labels , totals);
+        const labels = this.dataUserByFemaleAndMale.map((item: { label:string; }) => item.label);
+        const totals = this.dataUserByFemaleAndMale.map((item: { total: number; }) => item.total);
         
-    
-        this.data = {
+        this.dataUserByFemaleAndMale = {
           labels: labels,
           datasets: [
             {
               data: totals,
-              backgroundColor: [
-                '#FF6384',
-                '#36A2EB',
-                '#FFCE56',
-                '#4BC0C0',
-                '#9966FF',
-                '#FF9F40'
-              ],
-              hoverBackgroundColor: [
-                '#FF6384',
-                '#36A2EB',
-                '#FFCE56',
-                '#4BC0C0',
-                '#9966FF',
-                '#FF9F40'
-              ]
+              backgroundColor: this.colors.backgroundColor,
+              hoverBackgroundColor: this.colors.hoverBackgroundColor
             }
           ]
         };
       }
-    })
-
-    
-    
-   
+    });
   }
 
+  private loadCategoryByProductsCountData() {
+    this.staticsService.CategoriesByProductsCount().subscribe({
+      next: (res) => {
+
+        const values = res.map((item: any) => item);
+        this.totalCategories = values.length
+        const labels = values.map((item: { _id: string; }) => item._id);
+        const counts = values.map((item: { count: number; }) => item.count);
+
+        this.dataCategoryByProductsCount = {
+          labels: labels,
+          datasets: [
+            {
+              data: counts,
+              backgroundColor: this.colors.backgroundColor,
+              hoverBackgroundColor: this.colors.hoverBackgroundColor
+            }
+          ]
+        };
+      }
+    });
+  }
 }

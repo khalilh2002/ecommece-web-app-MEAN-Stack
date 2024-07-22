@@ -1,12 +1,13 @@
 import { Component , OnInit} from '@angular/core';
 import { ProductService } from '../service/product-service.service';
 import { ProductType } from '../interface/product-type';
+import { RouterModule } from '@angular/router';
 import { CardProductComponent } from './card-product/card-product.component';
 
 @Component({
   selector: 'app-product',
   standalone: true,
-  imports: [CardProductComponent],
+  imports: [RouterModule , CardProductComponent],
   templateUrl: './product.component.html',
   styleUrl: './product.component.scss'
 })

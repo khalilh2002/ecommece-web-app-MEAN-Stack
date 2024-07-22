@@ -1,7 +1,18 @@
-<div class="container-sm">
-  <h4>Total Users {{totalUsers}}</h4>
-  <div class="col-4 md-3">
-    <p-chart type="doughnut" [data]="data"></p-chart>
-  </div>
+<div class="container row p-4">
+    <div class="col-md-6">
+        <h4>Total Users {{ totalUsers }}</h4>
+        <div class="">
+            <p-chart type="doughnut" [data]="dataUserByFemaleAndMale"></p-chart>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <h4>Total Categories {{ totalCategories }}</h4>
+        <div class="">
+            <p-chart
+                type="doughnut"
+                [data]="dataCategoryByProductsCount"
+            ></p-chart>
+        </div>
+    </div>
 </div>
-  

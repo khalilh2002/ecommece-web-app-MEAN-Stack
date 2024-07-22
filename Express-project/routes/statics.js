@@ -13,4 +13,31 @@ router.get('/userByFemaleAndMale', async(req, res) => {
         totalUsers
     })
 })
+
+router.get('/categoriesByProductCount', async (req ,res)=>{
+    const categoryAndProductsCount = await Product.aggregate([
+        {
+            $lookup:{
+                from:'categories',
+                localField:'category',
+                foreignField:'_id',
+                as : 'category',
+            }
+        },
+        {
+            $unwind: '$category' // Unwind the category array to simplify the grouping
+          },
+          {
+            $group: {
+              _id: '$category.name', // Group by the name of the category
+              //products: { $push: '$$ROOT' }, // Push the entire document into the products array
+              count: { $sum: 1 } // Optionally, add a count of the number of products in each group
+            }
+          }
+            
+        ])
+        return res.json(categoryAndProductsCount)
+})
+
+
 module.exports = router

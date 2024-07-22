@@ -55,5 +55,22 @@ export const routes: Routes = [
         title:"admin"
         
     },
+    {
+        path:"admin/orders",
+        component: DashboardComponent,
+        title:"admin"
+        
+    },
+    {
+        path:"admin/users",
+        component: DashboardComponent,
+        title:"admin"
+        
+    },{
+        path:"admin/products",
+        component: DashboardComponent,
+        title:"admin"
+        
+    },
 
 ];

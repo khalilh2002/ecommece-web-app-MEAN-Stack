@@ -5,14 +5,50 @@ const mongoose = require('mongoose');
 const upload = require('../Config/multer-config');
 const path = require('path');
 const fs = require('fs');
+const Category = require('../models/Category');
 
-
+router.get('/test',async(req,res)=>{
+    const products = await Product.aggregate([
+    {
+        $lookup:{
+            from:'categories',
+            localField:'category',
+            foreignField:'_id',
+            as : 'category',
+        }
+    },
+    {
+        $unwind: '$category' // Unwind the category array to simplify the grouping
+      },
+      {
+        $group: {
+          _id: '$category.name', // Group by the name of the category
+          //products: { $push: '$$ROOT' }, // Push the entire document into the products array
+          count: { $sum: 1 } // Optionally, add a count of the number of products in each group
+        }
+      }
+        
+    ])
+    res.json(products);
+})
 
 router.get('/', async (req,res)=>{
     if (req.query.search) {
         product = await Product.find({ "name": { $regex: req.query.search, $options: 'i' } });
     }else{
-        product = await Product.find();
+        product = await Product.aggregate([{
+            $lookup:{
+                from:'categories',
+                localField:'category',
+                foreignField:'_id',
+                as : 'category',
+            }
+        },{
+            
+            $unwind:'$category'
+            
+        }
+    ]);
     }
     res.json(product);
 })

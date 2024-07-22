@@ -14,5 +14,8 @@ export class StaticsService {
   userByFemaleAndMale() : Observable<any>{
     return this.http.get(this.apiUrl+'/userByFemaleAndMale')
   }
-  
+
+  CategoriesByProductsCount(): Observable<any> {
+    return this.http.get(this.apiUrl+'/categoriesByProductCount')
+  }
 }
