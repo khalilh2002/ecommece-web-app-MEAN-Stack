@@ -7,7 +7,6 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const hashPassword = require("../service/hashPassword");
 const sendEmail = require("../service/sendEmail");
-//const { default: mongoose } = require("mongoose");
 const ms = require('ms');
 const router = express.Router();
 

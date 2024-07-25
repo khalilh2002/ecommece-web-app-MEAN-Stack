@@ -6,6 +6,8 @@ import { LoginComponent } from './account/login/login.component';
 import { VerifyEmailComponent } from './account/verify-email/verify-email.component';
 import { DashboardComponent } from './admin/dashboard/dashboard.component';
 import { ProfileComponent } from './account/profile/profile.component';
+import { AdminUsersComponent } from './admin/admin-users/admin-users.component';
+import { AdminProductsComponent } from './admin/admin-products/admin-products.component';
 
 export const routes: Routes = [
     {
@@ -63,12 +65,19 @@ export const routes: Routes = [
     },
     {
         path:"admin/users",
-        component: DashboardComponent,
+        component: AdminUsersComponent,
         title:"admin"
         
-    },{
+    },
+    {
         path:"admin/products",
-        component: DashboardComponent,
+        component: AdminProductsComponent,
+        title:"admin"
+        
+    },
+    {
+        path:"user/details/:id",
+        component: HomeComponent,
         title:"admin"
         
     },

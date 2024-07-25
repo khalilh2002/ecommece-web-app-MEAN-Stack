@@ -1,1 +1,27 @@
-<p>admin-users works!</p>
+<div class="container">
+  <h1>Users Dashboard</h1>
+  <p-table [value]="users" [paginator]="true" [rows]="30" [responsive]="true" [sortMode]="'multiple'">
+    <ng-template pTemplate="header">
+      <tr>
+        <th pSortableColumn="name">Name <p-sortIcon field="name"></p-sortIcon></th>
+        <th pSortableColumn="email">Email <p-sortIcon field="email"></p-sortIcon></th>
+        <th pSortableColumn="age">Age <p-sortIcon field="age"></p-sortIcon></th>
+        <th pSortableColumn="role">Role <p-sortIcon field="role"></p-sortIcon></th>
+        <th>Action</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-user>
+      <tr>
+        <td>{{ user.name }}</td>
+        <td>{{ user.email }}</td>
+        <td>{{ user.age }}</td>
+        <td>{{ user.role }}</td>
+        <td class="action-col">
+          <a [routerLink]="['/user/details/'+user._id]" routerLinkActive="router-link-active" class=" btn btn-sm btn-danger">Details</a>
+          <a [routerLink]="['/user/edit/'+user._id]" class="btn btn-sm btn-warning">Edit</a>
+          <a [routerLink]="['/user/delete/'+user._id]" class="btn btn-sm btn-primary">Show</a>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>

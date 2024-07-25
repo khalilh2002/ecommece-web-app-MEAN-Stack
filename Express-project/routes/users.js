@@ -2,11 +2,15 @@ const express = require('express');
 const router = express.Router();
 const User = require('../models/User');
 const mongoose = require('mongoose');
+const authAdmin = require('../middleware/authAdmin')
+require('dotenv').config();
 
+const secretKey = process.env.JWT_SECRET ;
 
-router.get('/', async (req,res)=>{
+router.get('/',authAdmin, async (req,res)=>{
     users = await User.find();
-    res.json(users);
+    res.json(users)
+    
 })
 
 router.put('/add', async (req, res) => {
