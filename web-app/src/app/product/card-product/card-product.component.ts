@@ -3,15 +3,32 @@ import { ProductType } from '../../interface/product-type';
 import { RouterModule } from '@angular/router';
 import { environment } from '../../../environments/environment';
 
+import {ChangeDetectionStrategy} from '@angular/core';
+import {MatButtonModule} from '@angular/material/button';
+import {MatCardModule} from '@angular/material/card';
+import {MatBadgeModule} from '@angular/material/badge';
+
+
 @Component({
   selector: 'app-card-product',
   standalone: true,
-  imports: [RouterModule],
+
+  imports: [
+    RouterModule , 
+    MatCardModule, 
+    MatButtonModule , 
+    MatBadgeModule 
+  ],
+
   templateUrl: './card-product.component.html',
-  styleUrl: './card-product.component.scss'
+  styleUrl: './card-product.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+
 })
 export class CardProductComponent {
   @Input() product : any | null = null;
+
+  
 
   getApiUrl(){
     return environment.apiUrl;
@@ -27,5 +44,15 @@ export class CardProductComponent {
 
     // Construct and return full image URL
     return `${baseUrl}/${imagePath}`;
+  }
+
+  viewDetails(): void {
+    // Logic to view product details
+    console.log('Viewing details for:', this.product?.name);
+  }
+
+  orderProduct(): void {
+    // Logic to order the product
+    console.log('Ordering product:', this.product?.name);
   }
 }

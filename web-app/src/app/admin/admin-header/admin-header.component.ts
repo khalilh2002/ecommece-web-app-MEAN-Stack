@@ -17,17 +17,18 @@ export class AdminHeaderComponent implements OnInit{
   constructor(private router : Router , private securityService:SecurityService , private cookieService:CookieService){}
 
   ngOnInit(): void {
-    this.securityService.checkUser().subscribe({
-      next:(res)=>{
-        this.adminUser= res.user
-        if (this.adminUser?.role!=='admin') {
-          alert('you are not an admin')
-          this.router.navigate(['/login'])
+    let isLogin = this.cookieService.get('is-login') === 'true'; // Strict comparison
+    if (isLogin) {
+      this.securityService.checkUser().subscribe({
+        next:(res)=>{
+          this.adminUser= res.user
+          if (this.adminUser?.role!=='admin') {
+            alert('you are not an admin')
+            this.router.navigate(['/login'])
+          }
         }
-      }
-    });
-    
-   
+      });
+    }
   }
   
   logout(){

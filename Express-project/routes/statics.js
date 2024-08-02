@@ -2,8 +2,14 @@ const express = require('express');
 const router = express.Router();
 const User = require('../models/User');
 const Product = require('../models/Product');
+const authAdmin = require('../middleware/authAdmin')
+
+router.use(authAdmin);
+
 
 router.get('/userByFemaleAndMale', async(req, res) => {
+  try{
+    
     const totalFemale = await User.find({sex:'F'}).count()
     const totalMale = await  User.find({sex:'M'}).count()
     const totalUsers = await User.find({}).count()
@@ -11,8 +17,14 @@ router.get('/userByFemaleAndMale', async(req, res) => {
         totalFemale,
         totalMale,
         totalUsers
-    })
+    });
+
+  }catch (error) {
+    res.status(500).json({ message: 'Server error', error: error.message });
+  }
+
 })
+
 
 router.get('/categoriesByProductCount', async (req ,res)=>{
     const categoryAndProductsCount = await Product.aggregate([

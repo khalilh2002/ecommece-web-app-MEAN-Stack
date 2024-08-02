@@ -1,0 +1,44 @@
+.product-card {
+    margin: 16px;
+    max-width: 360px;
+    border-radius: 8px;
+    overflow: hidden;
+    transition: box-shadow 0.3s ease-in-out;
+  
+    &:hover {
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+  
+    mat-card-header {
+      background-color: #f5f5f5;
+    }
+  
+    mat-card-content {
+      font-size: 14px;
+      color: #333;
+    }
+  
+    mat-card-actions {
+      padding: 8px 16px;
+      border-top: 1px solid #ddd;
+      display: flex;
+      justify-content: space-between;
+    }
+  
+    .demo-section {
+      position: relative;
+    }
+  
+    img {
+      width: 100%;
+      height: auto;
+    }
+  
+    .mat-badge-content {
+      background-color: #FF5722; /* Adjust color as needed */
+      color: #fff;
+      font-size: 14px;
+      padding: 4px 8px;
+    }
+  }
+  

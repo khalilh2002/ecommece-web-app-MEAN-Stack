@@ -7,11 +7,14 @@ require('dotenv').config();
 
 const secretKey = process.env.JWT_SECRET ;
 
-router.get('/',authAdmin, async (req,res)=>{
-    users = await User.find();
-    res.json(users)
-    
-})
+router.get('/', authAdmin, async (req, res) => {
+    try {
+      const users = await User.find();
+      res.json(users);
+    } catch (error) {
+      res.status(500).json({ message: 'Server error', error: error.message });
+    }
+});
 
 router.put('/add', async (req, res) => {
     try {

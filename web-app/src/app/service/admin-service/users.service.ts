@@ -7,10 +7,11 @@ import { environment } from '../../../environments/environment';
   providedIn: 'root'
 })
 export class UsersService {
-  apiUrl = environment.apiUrl + "/users";
+  apiUrl = `${environment.apiUrl}/users`;
 
-  constructor(private http : HttpClient) { }
-  getUsers() : Observable<any>{
-    return this.http.get(this.apiUrl,{withCredentials:true})
+  constructor(private http: HttpClient) { }
+
+  getUsers(): Observable<any> {
+    return this.http.get(this.apiUrl, { withCredentials: true });
   }
 }

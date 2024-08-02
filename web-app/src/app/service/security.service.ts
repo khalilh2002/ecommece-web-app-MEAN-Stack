@@ -42,8 +42,9 @@ export class SecurityService {
     })
   }
   logout():Observable<any> {
-    return this.http.post(this.baseUrl+'/logout',{ 
+    return this.http.post(this.baseUrl+'/logout',{},{ 
       withCredentials: true 
     })
   }
+
 }

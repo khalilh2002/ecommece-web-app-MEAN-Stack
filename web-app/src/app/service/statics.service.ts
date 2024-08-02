@@ -12,10 +12,10 @@ export class StaticsService {
   constructor(private http : HttpClient) { }
   
   userByFemaleAndMale() : Observable<any>{
-    return this.http.get(this.apiUrl+'/userByFemaleAndMale')
+    return this.http.get(this.apiUrl+'/userByFemaleAndMale' , { withCredentials: true })
   }
 
   CategoriesByProductsCount(): Observable<any> {
-    return this.http.get(this.apiUrl+'/categoriesByProductCount')
+    return this.http.get(this.apiUrl+'/categoriesByProductCount' , { withCredentials: true })
   }
 }

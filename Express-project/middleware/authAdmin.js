@@ -23,7 +23,7 @@ const authAdmin = async (req ,res ,next)=>{
     }catch(e){
         res.json({
             message : "unauthenticated",
-            error : e
+            error : e.message
         })
     }
     

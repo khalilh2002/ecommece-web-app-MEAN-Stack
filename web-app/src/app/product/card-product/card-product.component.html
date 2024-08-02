@@ -1,15 +1,21 @@
 
-<div class="card mb-3" style="max-width: 540px;">
-    <div class="row g-0">
-      <div class="col-md-4">
-        <img [src]="getImageUrl()" class="img-fluid rounded-start" alt="...">
-      </div>
-      <div class="col-md-8">
-        <div class="card-body ">
-          <h5 class="card-title">{{product?.name}}</h5>
-          <p class="card-text">{{product?.description}}</p>
-          <p class="card-text"><small class="text-body-secondary">{{ product?.createdAt }}</small></p>
-        </div>
-      </div>
-    </div>
-  </div>
+<mat-card class="product-card" appearance="outlined" mat-raised-button matBadge="{{product.price}}" matBadgePosition="before"  >
+  <mat-card-header>
+    
+    <mat-card-title>{{ product?.name }}</mat-card-title>
+    
+  </mat-card-header>
+
+ 
+    <img mat-card-image [src]="getImageUrl()" alt="{{ product?.name }}" />
+
+  <mat-card-content>
+    <p><small class="text-muted">Created on: {{ product?.createdAt  }}</small></p>
+  </mat-card-content>
+  
+  <mat-card-actions>
+    <button mat-button (click)="viewDetails()">Details</button>
+    <button mat-button (click)="orderProduct()">Order</button>
+  </mat-card-actions>
+
+</mat-card>
