@@ -8,6 +8,7 @@ import { DashboardComponent } from './admin/dashboard/dashboard.component';
 import { ProfileComponent } from './account/profile/profile.component';
 import { AdminUsersComponent } from './admin/admin-users/admin-users.component';
 import { AdminProductsComponent } from './admin/admin-products/admin-products.component';
+import { DetailsComponent } from './product/details/details.component';
 
 export const routes: Routes = [
     {
@@ -26,6 +27,10 @@ export const routes: Routes = [
         component: ProductComponent,
         title:"product"
         
+    },
+    {
+        path:"details/product/:id",
+        component:DetailsComponent
     },
     {
         path:"login",

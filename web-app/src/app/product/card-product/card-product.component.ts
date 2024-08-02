@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { ProductType } from '../../interface/product-type';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { environment } from '../../../environments/environment';
 
 import {ChangeDetectionStrategy} from '@angular/core';
@@ -28,7 +28,7 @@ import {MatBadgeModule} from '@angular/material/badge';
 export class CardProductComponent {
   @Input() product : any | null = null;
 
-  
+  constructor(private router:Router) {} 
 
   getApiUrl(){
     return environment.apiUrl;
@@ -48,7 +48,8 @@ export class CardProductComponent {
 
   viewDetails(): void {
     // Logic to view product details
-    console.log('Viewing details for:', this.product?.name);
+    this.router.navigate(['/details/product/'+this.product._id])
+    
   }
 
   orderProduct(): void {
