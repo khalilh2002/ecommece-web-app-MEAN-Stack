@@ -1,0 +1,64 @@
+.amazon-product {
+    border: 1px solid #ddd;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+}
+
+.amazon-product-image {
+    max-width: 100%;
+    max-height: 400px;
+    object-fit: contain;
+}
+
+.product-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #333;
+}
+
+.product-description {
+    font-size: 1rem;
+    color: #666;
+}
+
+.product-category {
+    font-size: 1rem;
+    color: #555;
+}
+
+.product-price {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.product-quantity {
+    font-size: 1rem;
+    color: #555;
+}
+
+.product-created-at {
+    font-size: 0.875rem;
+    color: #999;
+}
+
+.btn-warning {
+    background-color: #f0c14b;
+    border-color: #a88734;
+    color: #111;
+}
+
+.btn-warning:hover {
+    background-color: #e7b91d;
+    border-color: #a88734;
+}
+
+.btn-secondary {
+    background-color: #555;
+    border-color: #444;
+    color: #fff;
+}
+
+.btn-secondary:hover {
+    background-color: #333;
+    border-color: #222;
+}

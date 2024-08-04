@@ -1,10 +1,19 @@
-<div class="row">
-    <div class="col-md-8 md-2">
-        <h3>{{product?.name}}</h3>
-        <h5>{{product?.createdAt}}</h5>
-        <p>{{product?.description}}</p>
-    </div>
-    <div class="col-md-4 md-4">
-        <img [src]="getImageUrl()" alt="">
+<div class="container bg-white p-4 my-4 amazon-product">
+    <div class="row">
+        <div class="col-md-5 d-flex justify-content-center">
+            <img [src]="getImageUrl()" alt="Product Image" class="img-fluid amazon-product-image">
+        </div>
+        <div class="col-md-7">
+            <h3 class="product-title">{{product?.name}}</h3>
+            <hr>
+            <p class="product-description">{{product?.description}}</p>
+            <p class="product-category"><strong>Category:</strong> {{product?.category?.name}}</p>
+            <p class="product-price text-danger"><strong>{{product?.price}} $</strong></p>
+            <p class="product-quantity"><strong>Available:</strong> {{product?.quantity}} units</p>
+            <p class="product-created-at"><small>Added on: {{product?.createdAt }}</small></p>
+            <hr>
+            <button class="btn btn-warning btn-lg btn-block">Add to Cart</button>
+            <button class="btn btn-secondary btn-lg btn-block">Buy Now</button>
+        </div>
     </div>
 </div>

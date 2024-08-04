@@ -55,8 +55,28 @@ router.get('/', async (req,res)=>{
 
 router.get('/:id', async (req,res)=>{
     const id = req.params.id;
-    product = await Product.findById(id);
-    res.json(product);
+    product = await Product.aggregate([
+        {
+            $match:{
+                '_id' : new mongoose.Types.ObjectId(id)
+            }
+        },
+        {
+            $lookup:{
+                from:'categories',
+                localField:'category',
+                foreignField:'_id',
+                as : 'category',
+            }
+        },{
+            
+            $unwind:'$category'
+            
+        },{
+            $limit:1
+        }
+    ]);
+    res.json(product[0]);
 })
 
 router.put('/add', upload.single('image'), async (req, res) => {

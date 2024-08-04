@@ -3,15 +3,22 @@ import { ProductType } from '../../interface/product-type';
 import { environment } from '../../../environments/environment';
 import { ActivatedRoute } from '@angular/router';
 import { ProductService } from '../../service/product-service.service';
+
+
+
+
 @Component({
   selector: 'app-details',
   standalone: true,
-  imports: [],
+  imports: [
+    
+  ],
   templateUrl: './details.component.html',
   styleUrl: './details.component.scss'
 })
 export class DetailsComponent implements OnInit{
   product : ProductType | null = null;
+value: any;
 
   constructor(private activatedRoute : ActivatedRoute , private productService:ProductService ) {
     
