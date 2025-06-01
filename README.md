@@ -1,9 +1,5 @@
-TODO
-
-fix the cookie settings for user info to show in nav bar and home 
-
-add reset password 
-
-add admin page 
-
-make home page look desent
+# this project has two parts 
+```bash
+backend -> express project
+frontedn -> web-app
+```
